@@ -1,0 +1,16 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "order_tracking_user",
+  "password": "dnZ3_8vfhdp7LYYldkPQ",
+  "database": "order_tracking",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["backend/entities/**/*.ts"],
+  "migrations": ["backend/migrations/**/*.ts"],
+  "cli": {
+    "entitiesDir": "backend/entities",
+    "migrationsDir": "backend/migrations"
+  }
+}

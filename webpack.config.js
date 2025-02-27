@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.jsx", // Точка входа - правильно
+  entry: "./frontend/src/index.jsx", // Точка входа - правильно
   output: {
     filename: "main.js", // Имя выходного файла
     path: path.resolve(__dirname, "dist"), // Папка для выходных файлов
