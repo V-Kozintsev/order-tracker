@@ -6,8 +6,11 @@
   "scripts": {
     "serve": "webpack serve --mode development --open",
     "build": "webpack --mode production",
-    "start": "node backend/server.ts",
-    "dev": "ts-node-dev --respawn --transpile-only backend/server.ts"
+    "compile": "tsc",
+    "start": "ts-node backend/src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only backend/src/index.ts",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "migration:generate": "ts-node generate-migration.ts"
   },
   "repository": {
     "type": "git",
@@ -16,10 +19,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/V-Kozintsev/order-tracker/issues"
-  },
-  "homepage": "https://github.com/V-Kozintsev/order-tracker#readme",
   "devDependencies": {
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
@@ -27,6 +26,8 @@
     "@types/cors": "^2.8.17",
     "babel-loader": "^9.2.1",
     "body-parser": "^1.20.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "clean-webpack-plugin": "^4.0.0",
     "cors": "^2.8.5",
     "css-loader": "^7.1.2",
