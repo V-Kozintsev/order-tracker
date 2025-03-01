@@ -5,7 +5,7 @@
   "username": "order_track_user",
   "password": "dnZ3_8vfhdp7LYYldkPQ",
   "database": "order_track",
-  "synchronize": false,
+  "synchronize": true,
   "logging": false,
   "entities": ["backend/entities/**/*.ts"],
   "migrations": ["backend/migrations/**/*.ts"],

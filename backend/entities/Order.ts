@@ -47,9 +47,6 @@ export class Order {
   @Column({ type: "varchar", length: 255 })
   product_name: string = "";
 
-  /* @Column({ type: "varchar", length: 20, default: "" })
-  customer_email: string = ""; */
-
   @IsNotEmpty({ message: "Количество не может быть пустым" })
   @IsInt({ message: "Количество должно быть целым числом" })
   @Min(1, { message: "Количество должно быть положительным числом" })

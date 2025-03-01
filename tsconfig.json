@@ -111,7 +111,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "backend/**/*" // Укажи папку с TypeScript файлами
+    "backend/**/*", // Укажи папку с TypeScript файлами
+    "backend/generate-migration.ts"
   ],
   "exclude": ["node_modules"]
 }
