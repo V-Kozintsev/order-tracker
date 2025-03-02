@@ -3,7 +3,7 @@ import { DataSourceOptions } from "typeorm";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const config: DataSourceOptions = require("../ormconfig.json");
+const config: DataSourceOptions = require("../config/ormconfig.json");
 
 export const AppDataSource = new DataSource(config);
 
