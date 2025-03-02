@@ -1,4 +1,4 @@
-// backend/services/AdminService.ts
+// backend/src/services/AdminService.ts
 import { DataSource } from "typeorm";
 import { Admin } from "../entities/Admin";
 import { AdminRepository } from "../repositories/AdminRepository";
@@ -8,8 +8,12 @@ import * as jwt from "jsonwebtoken";
 export class AdminService {
   private adminRepository: AdminRepository;
 
-  constructor(private dataSource: DataSource) {
-    this.adminRepository = new AdminRepository(dataSource);
+  constructor(
+    private dataSource: DataSource,
+    adminRepository: AdminRepository
+  ) {
+    //  Удаляем private из конструктора
+    this.adminRepository = adminRepository;
   }
 
   async createAdmin(
@@ -57,9 +61,8 @@ export class AdminService {
       adminId: admin.id,
       role: admin.role,
     };
-    const secretKey = process.env.JWT_SECRET || "secret"; // Используем переменную окружения для секретного ключа
+    const secretKey = process.env.JWT_SECRET || "secret";
     const options: jwt.SignOptions = {
-      // Явное указание типа
       expiresIn: "1h", // Токен истекает через 1 час
     };
     return jwt.sign(payload, secretKey, options);

@@ -3,11 +3,11 @@ import { DataSource, DataSourceOptions } from "typeorm";
 
 const options: DataSourceOptions = {
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "order_track_user",
-  password: "12345",
-  database: "order_track",
+  host: process.env.DB_HOST || "localhost",
+  port: Number(process.env.DB_PORT) || 5432,
+  username: process.env.DB_USER || "order_track_user",
+  password: process.env.DB_PASSWORD || "12345",
+  database: process.env.DB_NAME || "order_track",
   synchronize: false,
   entities: ["backend/entities/**/*.ts"],
   migrationsTableName: "__migrations",

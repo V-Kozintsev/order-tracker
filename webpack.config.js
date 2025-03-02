@@ -1,52 +1,56 @@
-// webpack.config.js
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
-  entry: "./frontend/src/index.jsx",
+  mode: "development", //  или "production"
+  entry: "./frontend/src/index.tsx", // Измените расширение на .tsx
   output: {
-    filename: "main.js", // Имя выходного файла
-    path: path.resolve(__dirname, "dist"), // Папка для выходных файлов
-    clean: true, // Очистка папки dist перед сборкой
-    publicPath: "/", //  Важно для развертывания (относительно корня сайта)
+    filename: "main.js",
+    path: path.resolve(__dirname, "dist"),
+    clean: true,
+    publicPath: "/",
   },
+  devtool: "inline-source-map", // Добавляем source maps
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename: "index.html", //  Имя выходного HTML-файла
-      template: "public/index.html", // Шаблон HTML-файла
+      filename: "index.html",
+      template: "public/index.html",
     }),
+    new webpack.HotModuleReplacementPlugin(),
+    new ReactRefreshWebpackPlugin(),
   ],
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, //  Обрабатываем .js и .jsx файлы
-        exclude: /node_modules/, //  Исключаем node_modules
-        use: {
-          loader: "babel-loader", //  Используем babel-loader
-        },
+        test: /\.(ts|tsx)$/, // Обрабатываем .ts и .tsx файлы
+        exclude: /node_modules/,
+        use: "ts-loader", // Используем ts-loader
       },
       {
-        test: /\.css$/, // Обрабатываем .css файлы
+        test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/, //  Обработка изображений и шрифтов
-        type: "asset/resource", //  Используем asset module
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        type: "asset/resource",
       },
     ],
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, "public"), //  Папка для статики
+      directory: path.join(__dirname, "public"),
     },
-    compress: true, // Включаем сжатие
-    port: 3000, //  Порт для dev-сервера (измените, если нужно)
-    open: true, //  Автоматически открываем браузер
-    historyApiFallback: true, //  Важно для SPA (обработка маршрутизации)
+    compress: true,
+    port: 3000,
+    open: true,
+    hot: true,
+    historyApiFallback: true,
   },
   resolve: {
-    extensions: [".js", ".jsx", ".css"], //  Разрешаем импорт без указания расширения
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".css"], // Добавляем .ts и .tsx
   },
 };

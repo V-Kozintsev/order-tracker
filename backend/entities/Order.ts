@@ -43,7 +43,7 @@ export class Order {
     message: "Номер заказа не может быть длиннее 255 символов",
   })
   @Column({ type: "varchar", length: 255 })
-  orderNumber: string = ""; //  camelCase
+  orderNumber: string = "";
 
   @IsNotEmpty({ message: "Номер телефона клиента не может быть пустым" })
   @IsString({ message: "Номер телефона клиента должен быть строкой" })
@@ -51,7 +51,7 @@ export class Order {
     message: "Номер телефона клиента не может быть длиннее 20 символов",
   })
   @Column({ type: "varchar", length: 20 })
-  customerPhone: string = ""; //  camelCase
+  customerPhone: string = "";
 
   @IsNotEmpty({ message: "Адрес доставки не может быть пустым" })
   @IsString({ message: "Адрес доставки должен быть строкой" })

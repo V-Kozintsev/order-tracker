@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { DataSource } from "typeorm";
 import { Order } from "../entities/Order";
-import { validate } from "class-validator"; // Import validate
-import { plainToClass } from "class-transformer"; // Import plainToClass
+import { validate } from "class-validator";
+import { plainToClass } from "class-transformer";
 
 export class OrdersController {
   private orderRepository;
@@ -13,30 +13,28 @@ export class OrdersController {
 
   async createOrder(req: Request, res: Response): Promise<void> {
     try {
-      // 1. Преобразуем данные из тела запроса в экземпляр класса Order
-      const newOrder = plainToClass(Order, req.body);
+      console.log("createOrder: request body:", req.body); //  Логируем тело запроса
 
-      // 2. Валидируем данные
+      const newOrder = plainToClass(Order, req.body);
+      console.log("createOrder: newOrder after plainToClass:", newOrder); //  Логируем newOrder после plainToClass
+
       const errors = await validate(newOrder);
+      console.log("createOrder: validation errors:", errors); //  Логируем ошибки валидации
 
       if (errors.length > 0) {
-        // Если есть ошибки валидации, отправляем их клиенту
         res.status(400).json({ message: "Ошибка валидации", errors });
         return;
       }
 
-      // 3. Сохраняем заказ в базу данных
       const savedOrder = await this.orderRepository.save(newOrder);
+      console.log("createOrder: savedOrder:", savedOrder); //  Логируем savedOrder после сохранения
 
-      // 4. Отправляем ответ клиенту
       res.status(201).json(savedOrder);
     } catch (error) {
       console.error("Error creating order:", error);
       res.status(500).json({ message: "Не удалось создать заказ" });
     }
   }
-
-  // ... существующие методы ...
 
   async getOrderByPhoneAndOrderNumber(
     req: Request,
@@ -46,10 +44,9 @@ export class OrdersController {
       const customerPhone = req.query.phone as string;
       const orderNumber = req.query.orderNumber as string;
 
-      console.log("customerPhone:", customerPhone); 
-      console.log("orderNumber:", orderNumber); 
+      console.log("customerPhone:", customerPhone);
+      console.log("orderNumber:", orderNumber);
 
-      // Валидация параметров
       if (!customerPhone || !orderNumber) {
         res
           .status(400)
@@ -64,10 +61,9 @@ export class OrdersController {
         },
       });
 
-      console.log("order:", order); //  <----  ADD THIS LINE
+      console.log("order:", order);
 
       if (order) {
-        // Форматируем данные для ответа клиенту (выбираем только нужные поля)
         const clientOrderData = {
           orderNumber: order.orderNumber,
           customerPhone: order.customerPhone,
@@ -84,6 +80,17 @@ export class OrdersController {
     } catch (error) {
       console.error("Error getting order by phone and order number:", error);
       res.status(500).json({ message: "Не удалось получить заказ" });
+    }
+  }
+
+  // **Add this method:**
+  async getAllOrders(req: Request, res: Response): Promise<void> {
+    try {
+      const orders = await this.orderRepository.find();
+      res.json(orders);
+    } catch (error) {
+      console.error("Error getting all orders:", error);
+      res.status(500).json({ message: "Не удалось получить список заказов" });
     }
   }
 }

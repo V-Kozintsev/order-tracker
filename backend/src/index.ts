@@ -1,15 +1,18 @@
 //index.ts
-
+// index.ts
 import "reflect-metadata";
-import dataSource from "../config/dataSource"; // Import your DataSource
+import dataSource from "../config/dataSource";
 import { startServer } from "./server";
+import seed from "../seed";
 
 async function main() {
   try {
-    await dataSource.initialize(); // Initialize DataSource
+    await dataSource.initialize();
     console.log("Data Source has been initialized!");
 
-    await startServer(dataSource); // Pass DataSource to startServer
+    await seed(dataSource); // Execute the seed function
+
+    await startServer(dataSource);
   } catch (error) {
     console.error("Error during Data Source initialization:", error);
   }
