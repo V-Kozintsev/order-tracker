@@ -1,3 +1,4 @@
+//index.ts
 import "reflect-metadata";
 import { initializeDatabase } from "./database";
 import { startServer } from "./server";

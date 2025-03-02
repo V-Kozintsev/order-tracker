@@ -1,3 +1,4 @@
+//AdminRepository.ts
 import { DataSource, Repository } from "typeorm";
 import { Admin } from "../entities/Admin";
 

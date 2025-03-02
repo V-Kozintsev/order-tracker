@@ -5,7 +5,9 @@ import { OrdersController } from "../controllers/orders.controller";
 import { AdminController } from "../controllers/AdminController";
 import { DataSource } from "typeorm";
 import { authMiddleware } from "../middleware/authMiddleware";
+import dataSource from "../config/dataSource"; // Import your DataSource
 const { body, validationResult } = require("express-validator");
+require("dotenv").config();
 
 export async function startServer(dataSource: DataSource) {
   console.log("Server is running!");
@@ -16,16 +18,21 @@ export async function startServer(dataSource: DataSource) {
     app.use(cors());
     app.use(express.json());
 
-    const ordersController = new OrdersController();
     const adminController = new AdminController(dataSource);
+    const ordersController = new OrdersController(dataSource); // Pass DataSource to OrdersController
 
     app.get("/", (req: Request, res: Response) => {
       res.send("Hi backend");
     });
 
-    app.post("/orders", (req: Request, res: Response) => {
-      ordersController.createOrder(req, res);
-    });
+    // Protected route with authMiddleware
+    app.post(
+      "/orders",
+      authMiddleware(dataSource, ["admin", "superadmin"]), // Protect with authMiddleware
+      (req: Request, res: Response) => {
+        ordersController.createOrder(req, res);
+      }
+    );
 
     app.post("/data", (req: Request, res: Response) => {
       const data = req.body;

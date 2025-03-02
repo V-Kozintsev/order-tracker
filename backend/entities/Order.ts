@@ -1,3 +1,4 @@
+// backend/entities/Order.ts
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 import {
   IsNotEmpty,
@@ -7,8 +8,10 @@ import {
   Min,
   IsDate,
   IsEnum,
+  IsArray,
+  ValidateNested,
 } from "class-validator";
-import { Transform } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 
 enum OrderStatus {
   Pending = "Pending",
@@ -16,6 +19,17 @@ enum OrderStatus {
   Shipped = "Shipped",
   Delivered = "Delivered",
   Cancelled = "Cancelled",
+}
+
+class OrderItem {
+  @IsNotEmpty()
+  @IsString()
+  name: string = "";
+
+  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
+  quantity: number = 0;
 }
 
 @Entity({ name: "orders" })
@@ -29,7 +43,7 @@ export class Order {
     message: "Номер заказа не может быть длиннее 255 символов",
   })
   @Column({ type: "varchar", length: 255 })
-  order_number: string = "";
+  orderNumber: string = ""; //  camelCase
 
   @IsNotEmpty({ message: "Номер телефона клиента не может быть пустым" })
   @IsString({ message: "Номер телефона клиента должен быть строкой" })
@@ -37,27 +51,21 @@ export class Order {
     message: "Номер телефона клиента не может быть длиннее 20 символов",
   })
   @Column({ type: "varchar", length: 20 })
-  customer_phone: string = "";
+  customerPhone: string = ""; //  camelCase
 
-  @IsNotEmpty({ message: "Название продукта не может быть пустым" })
-  @IsString({ message: "Название продукта должно быть строкой" })
+  @IsNotEmpty({ message: "Адрес доставки не может быть пустым" })
+  @IsString({ message: "Адрес доставки должен быть строкой" })
   @MaxLength(255, {
-    message: "Название продукта не может быть длиннее 255 символов",
+    message: "Адрес доставки не может быть длиннее 255 символов",
   })
   @Column({ type: "varchar", length: 255 })
-  product_name: string = "";
-
-  @IsNotEmpty({ message: "Количество не может быть пустым" })
-  @IsInt({ message: "Количество должно быть целым числом" })
-  @Min(1, { message: "Количество должно быть положительным числом" })
-  @Column({ type: "integer" })
-  quantity: number = 0;
+  deliveryAddress: string = ""; //  camelCase
 
   @IsNotEmpty({ message: "Дата доставки не может быть пустой" })
   @IsDate({ message: "Дата доставки должна быть датой" })
   @Transform(({ value }) => new Date(value)) // Преобразуем строку в Date
   @Column({ type: "date" })
-  delivery_date: Date = new Date();
+  deliveryDate: Date = new Date(); //  camelCase
 
   @IsNotEmpty({ message: "Статус не может быть пустым" })
   @IsEnum(OrderStatus, {
@@ -65,5 +73,11 @@ export class Order {
       "Статус должен быть одним из: Pending, Processing, Shipped, Delivered, Cancelled",
   })
   @Column({ type: "varchar", length: 255 })
-  status: string = "";
+  status: string = ""; //  camelCase
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => OrderItem)
+  @Column({ type: "jsonb", default: [] })
+  items: OrderItem[] = [];
 }

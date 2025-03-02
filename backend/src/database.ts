@@ -1,3 +1,4 @@
+//database.ts
 import { DataSource } from "typeorm";
 import { DataSourceOptions } from "typeorm";
 import * as dotenv from "dotenv";
