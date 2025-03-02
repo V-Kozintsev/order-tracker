@@ -2,7 +2,10 @@
 import { DataSource } from "typeorm";
 import { DataSourceOptions } from "typeorm";
 import * as dotenv from "dotenv";
+import * as dotenvExpand from "dotenv-expand";
+
 dotenv.config();
+dotenvExpand.expand(dotenv.config()); // Load and expand environment variables
 
 const config: DataSourceOptions = require("../config/ormconfig.json");
 

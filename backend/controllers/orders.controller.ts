@@ -1,15 +1,13 @@
-// backend/controllers/orders.controller.ts
 import { Request, Response } from "express";
-import { DataSource } from "typeorm"; // Import DataSource
+import { DataSource } from "typeorm";
 import { Order } from "../entities/Order";
-import { validate } from "class-validator";
-import { plainToClass } from "class-transformer";
+import { validate } from "class-validator"; // Import validate
+import { plainToClass } from "class-transformer"; // Import plainToClass
 
 export class OrdersController {
   private orderRepository;
 
   constructor(private dataSource: DataSource) {
-    // Inject DataSource
     this.orderRepository = this.dataSource.getRepository(Order);
   }
 
@@ -38,24 +36,53 @@ export class OrdersController {
     }
   }
 
-  async getOrder(req: Request, res: Response): Promise<void> {
-    try {
-      const id = parseInt(req.params.id, 10);
+  // ... существующие методы ...
 
-      if (isNaN(id)) {
-        res.status(400).json({ message: "Некорректный ID заказа" });
+  async getOrderByPhoneAndOrderNumber(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const customerPhone = req.query.phone as string;
+      const orderNumber = req.query.orderNumber as string;
+
+      console.log("customerPhone:", customerPhone); 
+      console.log("orderNumber:", orderNumber); 
+
+      // Валидация параметров
+      if (!customerPhone || !orderNumber) {
+        res
+          .status(400)
+          .json({ message: "Не указаны номер телефона и номер заказа" });
         return;
       }
 
-      const order = await this.orderRepository.findOne({ where: { id } });
+      const order = await this.orderRepository.findOne({
+        where: {
+          customerPhone: customerPhone,
+          orderNumber: orderNumber,
+        },
+      });
+
+      console.log("order:", order); //  <----  ADD THIS LINE
 
       if (order) {
-        res.json(order);
+        // Форматируем данные для ответа клиенту (выбираем только нужные поля)
+        const clientOrderData = {
+          orderNumber: order.orderNumber,
+          customerPhone: order.customerPhone,
+          deliveryAddress: order.deliveryAddress,
+          deliveryDate: order.deliveryDate,
+          status: order.status,
+          items: order.items,
+        };
+
+        res.json(clientOrderData);
       } else {
         res.status(404).json({ message: "Заказ не найден" });
       }
     } catch (error) {
-      console.error("Error getting order:", error);
+      console.error("Error getting order by phone and order number:", error);
       res.status(500).json({ message: "Не удалось получить заказ" });
     }
   }

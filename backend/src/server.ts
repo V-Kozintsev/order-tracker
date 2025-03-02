@@ -5,11 +5,10 @@ import { OrdersController } from "../controllers/orders.controller";
 import { AdminController } from "../controllers/AdminController";
 import { DataSource } from "typeorm";
 import { authMiddleware } from "../middleware/authMiddleware";
-import dataSource from "../config/dataSource"; // Import your DataSource
 const { body, validationResult } = require("express-validator");
-require("dotenv").config();
 
 export async function startServer(dataSource: DataSource) {
+  // Keep DataSource argument
   console.log("Server is running!");
   try {
     const app = express();
@@ -33,6 +32,10 @@ export async function startServer(dataSource: DataSource) {
         ordersController.createOrder(req, res);
       }
     );
+
+    app.get("/orders/client", (req: Request, res: Response) => {
+      ordersController.getOrderByPhoneAndOrderNumber(req, res);
+    });
 
     app.post("/data", (req: Request, res: Response) => {
       const data = req.body;
