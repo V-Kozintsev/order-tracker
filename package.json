@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:all": "concurrently \"npm run start\" \"npm run serve\"",
     "serve": "webpack serve --mode development --open",
     "build": "webpack --mode production",
     "compile": "tsc",
@@ -37,6 +38,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
