@@ -13,8 +13,7 @@
     "dev": "ts-node-dev --respawn --transpile-only backend/src/index.ts",
     "typeorm": "tsx ./node_modules/typeorm/cli.js",
     "gen": "npm run typeorm migration:generate -- -d ./backend/config/dataSource.ts ./backend/migrations/init",
-    "m:run": "npm run typeorm migration:run -- -d ./backend/config/dataSource.ts",
-    "postinstall": "npm run db:init"
+    "m:run": "npm run typeorm migration:run -- -d ./backend/config/dataSource.ts"
   },
   "repository": {
     "type": "git",

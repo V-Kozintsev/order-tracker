@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=order_track_user
+      - DB_PASSWORD=12345
+      - DB_NAME=order_track
+    volumes:
+      - .:/app # Пробрасываем локальный репозиторий в контейнер для live-reload
+      - /app/node_modules # Исключаем node_modules, чтобы не перезаписывать их
+
+  db:
+    image: postgres:14.5
+    environment:
+      - POSTGRES_USER=order_track_user
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=order_track
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
