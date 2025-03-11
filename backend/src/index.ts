@@ -1,7 +1,7 @@
 //index.ts
 // index.ts
 import "reflect-metadata";
-import dataSource from "../config/dataSource";
+import {dataSource} from "../config/dataSource";
 import { startServer } from "./server";
 import seed from "../seed";
 

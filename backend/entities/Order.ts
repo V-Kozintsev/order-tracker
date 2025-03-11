@@ -1,4 +1,3 @@
-// backend/entities/Order.ts
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 import {
   IsNotEmpty,
@@ -10,6 +9,7 @@ import {
   IsEnum,
   IsArray,
   ValidateNested,
+  IsNumber,
 } from "class-validator";
 import { Transform, Type } from "class-transformer";
 
@@ -30,6 +30,10 @@ class OrderItem {
   @IsInt()
   @Min(1)
   quantity: number = 0;
+
+  // Добавим стоимость товара
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  price: number = 0;
 }
 
 @Entity({ name: "orders" })
@@ -59,13 +63,13 @@ export class Order {
     message: "Адрес доставки не может быть длиннее 255 символов",
   })
   @Column({ type: "varchar", length: 255 })
-  deliveryAddress: string = ""; //  camelCase
+  deliveryAddress: string = "";
 
   @IsNotEmpty({ message: "Дата доставки не может быть пустой" })
   @IsDate({ message: "Дата доставки должна быть датой" })
-  @Transform(({ value }) => new Date(value)) // Преобразуем строку в Date
+  @Transform(({ value }) => new Date(value))
   @Column({ type: "date" })
-  deliveryDate: Date = new Date(); //  camelCase
+  deliveryDate: Date = new Date();
 
   @IsNotEmpty({ message: "Статус не может быть пустым" })
   @IsEnum(OrderStatus, {
@@ -73,11 +77,16 @@ export class Order {
       "Статус должен быть одним из: Pending, Processing, Shipped, Delivered, Cancelled",
   })
   @Column({ type: "varchar", length: 255 })
-  status: string = ""; //  camelCase
+  status: string = "";
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => OrderItem)
   @Column({ type: "jsonb", default: [] })
   items: OrderItem[] = [];
+
+  // Добавляем общую стоимость заказа
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  @Column({ type: "numeric", precision: 10, scale: 2, default: 0.0 })
+  totalCost: number = 0.0;
 }
