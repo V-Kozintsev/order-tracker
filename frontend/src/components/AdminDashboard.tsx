@@ -1,4 +1,3 @@
-// src/components/AdminDashboard.tsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,12 +10,20 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="admin-dashboard-container">
       <h2>Личный кабинет администратора</h2>
-      <p>Добро пожаловать!</p>
-      <Link to="/admin/orders/create">Создать заказ</Link>
-      <Link to="/admin/orders">Показать весь список заказов</Link>
-      <button onClick={handleLogout}>Выйти</button>
+      <p className="welcome-message">Добро пожаловать!</p>
+      <div className="dashboard-links">
+        <Link to="/admin/orders/create" className="dashboard-link">
+          Создать заказ
+        </Link>
+        <Link to="/admin/orders" className="dashboard-link">
+          Показать весь список заказов
+        </Link>
+      </div>
+      <button onClick={handleLogout} className="logout-button">
+        Выйти
+      </button>
     </div>
   );
 };

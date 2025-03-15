@@ -72,15 +72,15 @@ const EditOrder: React.FC = () => {
     setOrder((prev) => (prev ? { ...prev, [field]: value } : null));
   };
 
-  if (loading) return <div>Загрузка...</div>;
-  if (error) return <div>{error}</div>;
-  if (!order) return <div>Заказ не найден</div>;
+  if (loading) return <div className="loading-message">Загрузка...</div>;
+  if (error) return <div className="error-message">{error}</div>;
+  if (!order) return <div className="not-found-message">Заказ не найден</div>;
 
   return (
-    <div>
+    <div className="edit-order-container">
       <h2>Редактирование заказа #{order.orderNumber}</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className="edit-order-form">
+        <div className="form-group">
           <label>Номер заказа:</label>
           <input
             type="text"
@@ -88,21 +88,21 @@ const EditOrder: React.FC = () => {
             onChange={(e) => handleChange("orderNumber", e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Телефон клиента:</label>
           <input
             value={order.customerPhone}
             onChange={(e) => handleChange("customerPhone", e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Адрес доставки:</label>
           <input
             value={order.deliveryAddress}
             onChange={(e) => handleChange("deliveryAddress", e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Дата доставки:</label>
           <input
             type="date"
@@ -110,7 +110,7 @@ const EditOrder: React.FC = () => {
             onChange={(e) => handleChange("deliveryDate", e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Статус:</label>
           <select
             value={order.status}
@@ -124,12 +124,11 @@ const EditOrder: React.FC = () => {
           </select>
         </div>
 
-        {/* Если у вас есть массив items, добавьте поля для редактирования позиций заказа */}
         {order.items && order.items.length > 0 && (
-          <div>
+          <div className="order-items-section">
             <h3>Позиции заказа:</h3>
             {order.items.map((item, index) => (
-              <div key={index}>
+              <div key={index} className="order-item">
                 <label>Наименование:</label>
                 <input
                   value={item.name}
@@ -179,11 +178,19 @@ const EditOrder: React.FC = () => {
           </div>
         )}
 
-        <button type="submit">Сохранить изменения</button>
-        <button type="button" onClick={() => navigate("/admin/orders")}>
-          Назад
-        </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="form-buttons">
+          <button type="submit" className="save-button">
+            Сохранить изменения
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/admin/orders")}
+            className="back-button"
+          >
+            Назад
+          </button>
+        </div>
+        {error && <p className="error-message">{error}</p>}
       </form>
     </div>
   );

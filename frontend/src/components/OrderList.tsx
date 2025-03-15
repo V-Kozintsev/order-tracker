@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Fuse from "fuse.js";
 
 interface OrderItem {
   id: number;
@@ -16,6 +17,8 @@ const OrderList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<OrderItem[]>([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -75,6 +78,15 @@ const OrderList: React.FC = () => {
     }
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    const fuse = new Fuse(orders, {
+      keys: ["orderNumber", "customerPhone"],
+    });
+    const results = fuse.search(e.target.value).map((result) => result.item);
+    setSearchResults(results);
+  };
+
   return (
     <div className="order-list-container">
       <h2>Список заказов</h2>
@@ -85,6 +97,31 @@ const OrderList: React.FC = () => {
       >
         Назад
       </button>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={handleSearch}
+        placeholder="Номер заказа или телефон"
+        className="search-input"
+      />
+      {searchQuery && (
+        <div className="search-results">
+          <h3>Результаты поиска:</h3>
+          <ul>
+            {searchResults.map((result) => (
+              <li key={result.id}>
+                <span
+                  onClick={() => navigate(`/admin/orders/edit/${result.id}`)}
+                >
+                  {result.orderNumber} - {result.customerPhone}
+                </span>
+                <hr className="result-divider" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <table className="orders-table">
         <thead>
           <tr>
@@ -99,7 +136,16 @@ const OrderList: React.FC = () => {
         </thead>
         <tbody>
           {orders.map((order) => (
-            <tr key={order.id}>
+            <tr
+              key={order.id}
+              className="order-row"
+              onClick={(e) => {
+                const target = e.target as HTMLElement;
+                if (target.tagName !== "BUTTON") {
+                  navigate(`/admin/orders/edit/${order.id}`);
+                }
+              }}
+            >
               <td>{order.id}</td>
               <td>{order.orderNumber}</td>
               <td>{order.customerPhone}</td>
