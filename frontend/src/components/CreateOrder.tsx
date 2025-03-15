@@ -1,6 +1,7 @@
 // src/components/CreateOrder.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface FormValues {
   orderNumber: string;
@@ -20,6 +21,12 @@ const CreateOrder: React.FC = () => {
   const [items, setItems] = useState([{ name: "", quantity: 1 }]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+  const handleRemoveItem = (index: number) => {
+    const updatedItems = [...items];
+    updatedItems.splice(index, 1);
+    setItems(updatedItems);
+  };
 
   const handleAddItem = () => {
     setItems([...items, { name: "", quantity: 1 }]);
@@ -32,6 +39,7 @@ const CreateOrder: React.FC = () => {
   ) => {
     // Указываем типы для value
     const updatedItems = [...items];
+
     if (field === "name") {
       updatedItems[index].name = value as string; //  Приводим тип к string
     } else if (field === "quantity") {
@@ -43,6 +51,7 @@ const CreateOrder: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccessMessage("");
 
     const orderData: FormValues = {
       orderNumber,
@@ -68,8 +77,21 @@ const CreateOrder: React.FC = () => {
         setError("Не удалось создать заказ");
         return;
       }
+      if (response.ok) {
+        setSuccessMessage("Заказ успешно создан!");
+        // Очищаем форму
+        setOrderNumber("");
+        setCustomerPhone("");
+        setDeliveryAddress("");
+        setDeliveryDate("");
+        setStatus("");
+        setItems([{ name: "", quantity: 1 }]);
 
-      navigate("/admin"); // Redirect to admin dashboard after successful creation
+        // Автоочистка сообщения через 3 секунды
+        setTimeout(() => setSuccessMessage(""), 3000);
+      }
+
+      /* navigate("/admin");  */
     } catch (error: any) {
       setError("Произошла ошибка при создании заказа");
       console.error(error);
@@ -79,6 +101,23 @@ const CreateOrder: React.FC = () => {
   return (
     <div>
       <h2>Создать заказ</h2>
+      <Link to="/admin">
+        <button
+          style={{
+            padding: "10px 20px",
+            background: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            marginBottom: "20px",
+          }}
+        >
+          Вернуться в админ-панель
+        </button>
+      </Link>
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="orderNumber">Номер заказа:</label>
@@ -147,6 +186,21 @@ const CreateOrder: React.FC = () => {
                   handleItemChange(index, "quantity", e.target.value)
                 }
               />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem(index)}
+                style={{
+                  marginLeft: "10px",
+                  padding: "5px 10px",
+                  background: "#dc3545",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Удалить
+              </button>
             </div>
           ))}
           <button type="button" onClick={handleAddItem}>

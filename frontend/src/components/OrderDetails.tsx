@@ -1,5 +1,7 @@
+//OrederDetails.tsx
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface OrderItem {
   name: string;
@@ -21,6 +23,7 @@ interface FormValues {
 }
 
 const OrderDetailsComponent: React.FC = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,6 +32,11 @@ const OrderDetailsComponent: React.FC = () => {
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); //  Новое состояние
+  // Новые состояния для админской авторизации
+  const [adminUsername, setAdminUsername] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
+  const [adminError, setAdminError] = useState("");
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setError("");
@@ -62,8 +70,132 @@ const OrderDetailsComponent: React.FC = () => {
     }
   };
 
+  const handleAdminLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdminError("");
+
+    try {
+      const response = await fetch("http://localhost:3001/admins/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: adminUsername,
+          password: adminPassword,
+        }),
+      });
+
+      if (!response.ok) {
+        setAdminError("Неверные учетные данные");
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem("adminToken", data.token);
+      navigate("/admin"); // Перенаправление в админ-панель
+      setShowAdminLogin(false);
+    } catch (error) {
+      setAdminError("Ошибка при входе");
+      console.error(error);
+    }
+  };
+
   return (
     <div>
+      {/* Кнопка для открытия формы входа */}
+      <div style={{ margin: "20px 0" }}>
+        <button
+          onClick={() => setShowAdminLogin(true)}
+          style={{
+            padding: "10px 20px",
+            background: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Вход для администратора
+        </button>
+      </div>
+      {/* Модальное окно для входа администратора */}
+      {showAdminLogin && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "20px",
+              borderRadius: "8px",
+              width: "300px",
+            }}
+          >
+            <h3>Вход в админ-панель</h3>
+            <form onSubmit={handleAdminLogin}>
+              <div style={{ marginBottom: "15px" }}>
+                <label>Логин:</label>
+                <input
+                  type="text"
+                  value={adminUsername}
+                  onChange={(e) => setAdminUsername(e.target.value)}
+                  style={{ width: "100%", padding: "8px" }}
+                />
+              </div>
+              <div style={{ marginBottom: "15px" }}>
+                <label>Пароль:</label>
+                <input
+                  type="password"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  style={{ width: "100%", padding: "8px" }}
+                />
+              </div>
+              {adminError && <p style={{ color: "red" }}>{adminError}</p>}
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  type="submit"
+                  style={{
+                    padding: "8px 16px",
+                    background: "#28a745",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Войти
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAdminLogin(false)}
+                  style={{
+                    padding: "8px 16px",
+                    background: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Отмена
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       <h2>Информация о заказе</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
