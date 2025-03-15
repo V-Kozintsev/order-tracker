@@ -91,4 +91,68 @@ export class OrdersController {
       throw new Error("Не удалось получить список заказов");
     }
   }
+
+  async getOrderById(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId = parseInt(req.params.id);
+      const order = await this.orderRepository.findOne({
+        where: { id: orderId },
+      });
+
+      if (!order) {
+        res.status(404).json({ message: "Заказ не найден" });
+        return;
+      }
+
+      res.json(order);
+    } catch (error) {
+      console.error("Error getting order by ID:", error);
+      res.status(500).json({ message: "Ошибка получения заказа" });
+    }
+  }
+
+  async updateOrder(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId = parseInt(req.params.id);
+      const existingOrder = await this.orderRepository.findOneBy({
+        id: orderId,
+      });
+
+      if (!existingOrder) {
+        res.status(404).json({ message: "Заказ не найден" });
+        return;
+      }
+
+      const updatedData = plainToClass(Order, req.body);
+      const errors = await validate(updatedData);
+
+      if (errors.length > 0) {
+        res.status(400).json({ message: "Ошибка валидации", errors });
+        return;
+      }
+
+      const mergedOrder = this.orderRepository.merge(
+        existingOrder,
+        updatedData
+      );
+      const savedOrder = await this.orderRepository.save(mergedOrder);
+
+      res.json(savedOrder);
+    } catch (error) {
+      console.error("Error updating order:", error);
+      res.status(500).json({ message: "Ошибка обновления заказа" });
+    }
+  }
+
+  async deleteOrder(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId = parseInt(req.params.id);
+      await this.orderRepository.delete(orderId);
+
+      res.status(204).json({ message: "Заказ удален" });
+    } catch (error) {
+      console.error("Error deleting order:", error);
+      res.status(500).json({ message: "Ошибка удаления заказа" });
+    }
+  }
 }

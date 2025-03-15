@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface OrderItem {
   id: number;
@@ -14,6 +15,7 @@ const OrderList: React.FC = () => {
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -53,9 +55,32 @@ const OrderList: React.FC = () => {
     return <p>Error: {error}</p>;
   }
 
+  const handleDelete = async (orderId: number) => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch(`http://localhost:3001/orders/${orderId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setOrders(orders.filter((order) => order.id !== orderId));
+    } catch (e: any) {
+      console.error(e);
+    }
+  };
+
   return (
     <div>
       <h2>Список заказов</h2>
+      <button type="button" onClick={() => navigate("/admin")}>
+        Назад
+      </button>
       <table>
         <thead>
           <tr>
@@ -78,8 +103,12 @@ const OrderList: React.FC = () => {
               <td>{order.deliveryDate}</td>
               <td>{order.status}</td>
               <td>
-                <button>Редактировать</button>
-                <button>Удалить</button>
+                <button
+                  onClick={() => navigate(`/admin/orders/edit/${order.id}`)}
+                >
+                  Редактировать
+                </button>
+                <button onClick={() => handleDelete(order.id)}>Удалить</button>
               </td>
             </tr>
           ))}

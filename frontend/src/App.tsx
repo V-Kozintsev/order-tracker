@@ -5,7 +5,8 @@ import AdminDashboard from "./components/AdminDashboard";
 import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateOrder from "./components/CreateOrder";
-import OrderList from "./components/OrderList"; // Import OrderList
+import OrderList from "./components/OrderList";
+import EditOrder from "./components/EditOrder"; // Import EditOrder
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <OrderList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditOrder />
               </ProtectedRoute>
             }
           />

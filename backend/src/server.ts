@@ -42,6 +42,29 @@ export async function startServer(dataSource: DataSource) {
     app.get("/orders/client", (req: Request, res: Response) => {
       ordersController.getOrderByPhoneAndOrderNumber(req, res);
     });
+    app.get(
+      "/orders/:id",
+      authMiddleware(dataSource, ["admin", "superadmin"]),
+      (req: Request, res: Response) => {
+        ordersController.getOrderById(req, res);
+      }
+    );
+
+    app.put(
+      "/orders/:id",
+      authMiddleware(dataSource, ["admin", "superadmin"]),
+      (req: Request, res: Response) => {
+        ordersController.updateOrder(req, res);
+      }
+    );
+
+    app.delete(
+      "/orders/:id",
+      authMiddleware(dataSource, ["admin", "superadmin"]),
+      (req: Request, res: Response) => {
+        ordersController.deleteOrder(req, res);
+      }
+    );
 
     app.post("/data", (req: Request, res: Response) => {
       const data = req.body;
