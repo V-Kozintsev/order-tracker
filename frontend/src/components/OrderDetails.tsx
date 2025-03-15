@@ -1,11 +1,11 @@
-//OrederDetails.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 interface OrderItem {
   name: string;
   quantity: number;
+  price: number;
 }
 
 interface OrderDetails {
@@ -28,20 +28,33 @@ const OrderDetailsComponent: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue, // Добавляем setValue из useForm
   } = useForm<FormValues>();
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); //  Новое состояние
-  // Новые состояния для админской авторизации
+  const [isLoading, setIsLoading] = useState(false);
   const [adminUsername, setAdminUsername] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
   const [adminError, setAdminError] = useState("");
   const [showAdminLogin, setShowAdminLogin] = useState(false);
 
+  // Функция для автозаполнения "+7" и форматирования номера телефона
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    if (!value.startsWith("+7")) {
+      value = "+7" + value.replace(/\D/g, "").slice(0, 10);
+    }
+    setValue("phone", value); // Используем setValue для обновления значения в useForm
+  };
+
+  useEffect(() => {
+    setValue("phone", "+7"); // Устанавливаем начальное значение "+7" при загрузке компонента
+  }, [setValue]);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setError("");
     setOrderDetails(null);
-    setIsLoading(true); // Начинаем загрузку
+    setIsLoading(true);
 
     try {
       const response = await fetch(
@@ -66,7 +79,7 @@ const OrderDetailsComponent: React.FC = () => {
       setError("Не удалось получить информацию о заказе");
       console.error(error);
     } finally {
-      setIsLoading(false); // Заканчиваем загрузку в любом случае (успех или ошибка)
+      setIsLoading(false);
     }
   };
 
@@ -93,7 +106,7 @@ const OrderDetailsComponent: React.FC = () => {
 
       const data = await response.json();
       localStorage.setItem("adminToken", data.token);
-      navigate("/admin"); // Перенаправление в админ-панель
+      navigate("/admin");
       setShowAdminLogin(false);
     } catch (error) {
       setAdminError("Ошибка при входе");
@@ -199,9 +212,21 @@ const OrderDetailsComponent: React.FC = () => {
       <h2>Информация о заказе</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="phone">Номер телефона:</label>
+          <label htmlFor="phone">
+            Номер телефона:
+            <span
+              style={{
+                marginLeft: "5px",
+                fontSize: "0.8em",
+                color: "#777",
+                fontStyle: "italic",
+              }}
+            >
+              (Начните ввод номера, +7 будет автоматически добавлено)
+            </span>
+          </label>
           <input
-            type="text"
+            type="tel"
             id="phone"
             {...register("phone", {
               required: "Номер телефона обязателен",
@@ -210,6 +235,8 @@ const OrderDetailsComponent: React.FC = () => {
                 message: "Неверный формат номера телефона",
               },
             })}
+            onChange={handlePhoneChange} // Подключаем обработчик изменения номера телефона
+            defaultValue="+7" // Устанавливаем начальное значение "+7"
           />
           {errors.phone && (
             <p style={{ color: "red" }}>{errors.phone.message}</p>
@@ -232,7 +259,7 @@ const OrderDetailsComponent: React.FC = () => {
           Найти заказ
         </button>
       </form>
-      {isLoading && <p>Загрузка...</p>} {/* Индикатор загрузки */}
+      {isLoading && <p>Загрузка...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {orderDetails && (
         <div>
@@ -246,7 +273,7 @@ const OrderDetailsComponent: React.FC = () => {
           <ul>
             {orderDetails.items.map((item, index) => (
               <li key={index}>
-                {item.name} - {item.quantity}
+                {item.name} - {item.quantity} шт. - Цена: {item.price} руб.
               </li>
             ))}
           </ul>
