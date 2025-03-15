@@ -22,6 +22,10 @@ const CreateOrder: React.FC = () => {
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
   const handleRemoveItem = (index: number) => {
+    if (items.length <= 1) {
+      setError("Нельзя удалить последнюю позицию заказа.");
+      return;
+    }
     const updatedItems = [...items];
     updatedItems.splice(index, 1);
     setItems(updatedItems);
@@ -62,6 +66,11 @@ const CreateOrder: React.FC = () => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
+
+    if (items.length === 0) {
+      setError("Необходимо добавить хотя бы одну позицию заказа.");
+      return;
+    }
 
     if (
       !orderNumber ||
