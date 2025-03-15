@@ -84,13 +84,11 @@ export class OrdersController {
   }
 
   // **Add this method:**
-  async getAllOrders(req: Request, res: Response): Promise<void> {
+  async getAllOrders(): Promise<Order[]> {
     try {
-      const orders = await this.orderRepository.find();
-      res.json(orders);
+      return await this.orderRepository.find();
     } catch (error) {
-      console.error("Error getting all orders:", error);
-      res.status(500).json({ message: "Не удалось получить список заказов" });
+      throw new Error("Не удалось получить список заказов");
     }
   }
 }

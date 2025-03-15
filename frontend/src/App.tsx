@@ -1,11 +1,11 @@
-// src/App.tsx
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import OrderDetails from "./components/OrderDetails";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
-import CreateOrder from "./components/CreateOrder"; // Import CreateOrder
+import CreateOrder from "./components/CreateOrder";
+import OrderList from "./components/OrderList"; // Import OrderList
 
 function App() {
   return (
@@ -27,6 +27,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateOrder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute>
+                <OrderList />
               </ProtectedRoute>
             }
           />

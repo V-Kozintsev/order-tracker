@@ -1,4 +1,3 @@
-// src/components/OrderList.tsx
 import React, { useState, useEffect } from "react";
 
 interface OrderItem {
@@ -22,10 +21,17 @@ const OrderList: React.FC = () => {
       setError("");
 
       try {
-        const response = await fetch("http://localhost:3001/admin/orders"); // Замените на ваш API-endpoint
+        const token = localStorage.getItem("adminToken");
+        const response = await fetch("http://localhost:3001/admin/orders", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         const data = await response.json();
         setOrders(data);
       } catch (e: any) {

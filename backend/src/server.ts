@@ -54,13 +54,17 @@ export async function startServer(dataSource: DataSource) {
       authMiddleware(dataSource, ["admin", "superadmin"]),
       async (req: Request, res: Response) => {
         try {
-          const orders = await ordersController.getAllOrders(req, res);
+          const orders = await ordersController.getAllOrders();
           res.json(orders);
         } catch (error) {
           console.error("Error getting orders:", error);
-          res
-            .status(500)
-            .json({ message: "Не удалось получить список заказов" });
+
+          // Проверяем, является ли error объектом с message
+          if (error instanceof Error) {
+            res.status(500).json({ message: error.message });
+          } else {
+            res.status(500).json({ message: "Неизвестная ошибка" });
+          }
         }
       }
     );

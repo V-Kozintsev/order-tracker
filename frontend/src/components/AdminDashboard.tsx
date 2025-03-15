@@ -15,6 +15,7 @@ const AdminDashboard: React.FC = () => {
       <h2>Личный кабинет администратора</h2>
       <p>Добро пожаловать!</p>
       <Link to="/admin/orders/create">Создать заказ</Link>
+      <Link to="/admin/orders">Показать весь список заказов</Link>
       <button onClick={handleLogout}>Выйти</button>
     </div>
   );
