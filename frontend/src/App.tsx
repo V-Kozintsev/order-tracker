@@ -6,7 +6,8 @@ import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateOrder from "./components/CreateOrder";
 import OrderList from "./components/OrderList";
-import EditOrder from "./components/EditOrder"; // Import EditOrder
+import EditOrder from "./components/EditOrder";
+import "./App.css";
 
 function App() {
   return (

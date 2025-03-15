@@ -1,0 +1,59 @@
+.order-list-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.edit-button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 15px; /* Добавлено расстояние между кнопками */
+  transition: background-color 0.2s ease; /* Добавлена анимация при наведении */
+  margin-bottom: 5px;
+}
+
+.edit-button:hover {
+  background-color: #2ecc71; /* Изменение цвета при наведении */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Добавлено небольшое затенение */
+}
+
+.delete-button {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease; /* Добавлена анимация при наведении */
+}
+
+.delete-button:hover {
+  background-color: #c82333; /* Изменение цвета при наведении */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Добавлено небольшое затенение */
+}

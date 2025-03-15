@@ -76,12 +76,16 @@ const OrderList: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="order-list-container">
       <h2>Список заказов</h2>
-      <button type="button" onClick={() => navigate("/admin")}>
+      <button
+        type="button"
+        className="back-button"
+        onClick={() => navigate("/admin")}
+      >
         Назад
       </button>
-      <table>
+      <table className="orders-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -104,11 +108,17 @@ const OrderList: React.FC = () => {
               <td>{order.status}</td>
               <td>
                 <button
+                  className="edit-button"
                   onClick={() => navigate(`/admin/orders/edit/${order.id}`)}
                 >
                   Редактировать
                 </button>
-                <button onClick={() => handleDelete(order.id)}>Удалить</button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(order.id)}
+                >
+                  Удалить
+                </button>
               </td>
             </tr>
           ))}
