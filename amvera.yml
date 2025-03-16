@@ -1,37 +1,61 @@
+version: 1
+
 services:
   backend:
+    name: backend
+    type: application
     build:
       context: .
       dockerfile: Dockerfile.backend
     ports:
-      - "3001:3001"
-    env_file:
-      - .env
-    depends_on:
+      - port: 3001
+        target_port: 3001
+    env:
+      - from_file: .env # or specify individual vars: DB_USER, DB_PASSWORD, DB_NAME
+    dependencies:
       - db
-    restart: always
+    healthcheck:
+      path: /health # Replace with your backend healthcheck endpoint
+      port: 3001
+    scaling:
+      min_replicas: 1
+      max_replicas: 3
+      cpu: 0.5
+      memory: 512Mi
 
   frontend:
+    name: frontend
+    type: application
     build:
       context: .
       dockerfile: Dockerfile.frontend
     ports:
-      - "3000:3000"
-    depends_on:
+      - port: 3000
+        target_port: 3000
+    dependencies:
       - backend
+    healthcheck:
+      path: / # Assuming your frontend root returns a 200 OK
+      port: 3000
+    scaling:
+      min_replicas: 1
+      max_replicas: 3
+      cpu: 0.5
+      memory: 512Mi
 
   db:
-    image: postgres:15
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+    name: db
+    type: postgres
+    version: "15" # Specific version of PostgreSQL
+    env:
+      - name: POSTGRES_USER
+        value_from_file: DB_USER # Read DB_USER from the .env file
+      - name: POSTGRES_PASSWORD
+        value_from_file: DB_PASSWORD # Read DB_PASSWORD from the .env file
+      - name: POSTGRES_DB
+        value_from_file: DB_NAME # Read DB_NAME from the .env file
+    persistent_storage:
+      enabled: true
+      size: 10Gi
+    # No need to expose port since Amvera handles internal networking
+# No need to define volumes, Amvera handles persistence for postgres service
