@@ -1,0 +1,594 @@
+.order-list-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.search-results {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-results ul li {
+  margin-bottom: 15px;
+}
+
+.search-results ul li span {
+  cursor: pointer;
+  color: #337ab7;
+  font-weight: bold;
+}
+
+.search-results ul li span:hover {
+  text-decoration: underline;
+}
+
+.result-divider {
+  margin: 10px 0;
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.orders-table th:nth-child(4),
+.orders-table td:nth-child(4) {
+  width: 250px; /* Увеличьте ширину колонки с адресом доставки */
+}
+
+.edit-button,
+.delete-button {
+  width: 100%; /* Установите одну ширину для обеих кнопок */
+  text-align: center; /* Выравнивание текста по центру */
+  margin-bottom: 5px; /* Добавьте отступ между кнопками */
+  padding: 8px 16px;
+}
+
+.edit-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.edit-button:hover {
+  background-color: #2ecc71;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-row {
+  cursor: pointer;
+}
+
+.order-row:hover {
+  background-color: #e5e5e5; /* Светлый серый цвет */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Небольшая тень */
+  transition: background-color 0.2s ease; /* Плавное изменение цвета */
+}
+.order-details-container {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-login-button-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.admin-login-button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-login-button:hover {
+  background-color: #0056b3;
+}
+
+.admin-login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-login-form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.phone-hint {
+  margin-left: 5px;
+  font-size: 0.8em;
+  color: #777;
+  font-style: italic;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+.admin-login-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button {
+  background: #28a745;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #1e7e34;
+}
+
+.cancel-button {
+  background: #dc3545;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.order-form {
+  margin-bottom: 20px;
+}
+
+.order-details {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.order-details h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.order-details ul {
+  padding-left: 20px;
+}
+
+.order-details li {
+  margin-bottom: 5px;
+}
+.order-details-container {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-login-button-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.admin-login-button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-login-button:hover {
+  background-color: #0056b3;
+}
+
+.admin-login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-login-form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.phone-hint {
+  margin-left: 5px;
+  font-size: 0.8em;
+  color: #777;
+  font-style: italic;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+.admin-login-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button {
+  background: #28a745;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #1e7e34;
+}
+
+.cancel-button {
+  background: #dc3545;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.order-form {
+  margin-bottom: 20px;
+}
+
+.order-details {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.order-details h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.order-details ul {
+  padding-left: 20px;
+}
+
+.order-details li {
+  margin-bottom: 5px;
+}
+.admin-dashboard-container {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.welcome-message {
+  font-size: 1.2em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.dashboard-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-link {
+  display: block;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+  width: 200px;
+  text-align: center;
+}
+
+.dashboard-link:hover {
+  background-color: #0056b3;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+.edit-order-container {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.edit-order-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.order-items-section {
+  margin-top: 20px;
+}
+
+.order-item {
+  margin-bottom: 15px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.save-button {
+  padding: 8px 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #1e7e34;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.loading-message {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.not-found-message {
+  font-size: 1.2em;
+  color: #555;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .order-list-container {
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 5px;
+  }
+
+  .orders-table th:nth-child(4),
+  .orders-table td:nth-child(4) {
+    width: auto; /* Автоматическая ширина на мобильных */
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 80px; /* Уменьшите ширину кнопок на мобильных */
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-table {
+    font-size: 14px; /* Уменьшите размер шрифта на очень маленьких экранах */
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 60px; /* Уменьшите ширину кнопок на очень маленьких экранах */
+    padding: 5px 5px;
+  }
+}

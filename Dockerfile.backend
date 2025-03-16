@@ -1,0 +1,16 @@
+FROM node:20
+
+WORKDIR /app
+
+# Копируем ТОЛЬКО package.json сначала для кэширования
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+# Копируем остальные файлы
+COPY . .
+
+WORKDIR /app/backend
+
+EXPOSE 3001
+CMD ["sh", "-c", "sleep 10 && npm run db:init && npm run m:run && npm run start"]
