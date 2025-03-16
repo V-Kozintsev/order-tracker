@@ -1,16 +1,17 @@
 // scripts/init_db.ts
 import { DataSource, DataSourceOptions } from "typeorm";
 import { dataSource } from "../config/dataSource";
+import seed from "../seed";
 
 const initDB = async () => {
   try {
     // Создаем временное подключение к базе данных postgres для создания новой базы данных
     const tempDataSourceOptions: DataSourceOptions = {
       type: "postgres",
-      host: process.env.DB_HOST || "localhost",
+      host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT) || 5432,
-      username: process.env.DB_USER || "order_track_user",
-      password: process.env.DB_PASSWORD || "12345",
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
       database: "postgres", // Подключаемся к базе данных postgres для создания новой
     };
 
@@ -51,6 +52,7 @@ const initDB = async () => {
     await dataSource.initialize();
     await dataSource.runMigrations();
     console.log("Migrations completed successfully.");
+    await seed(dataSource);
 
     console.log("Database initialization complete.");
   } catch (error) {

@@ -13,4 +13,4 @@ COPY . .
 WORKDIR /app/backend
 
 EXPOSE 3001
-CMD ["sh", "-c", "npm run db:init && npm run start"]
+CMD ["sh", "-c", "sleep 10 && npm run db:init && npm run m:run && npm run start"]

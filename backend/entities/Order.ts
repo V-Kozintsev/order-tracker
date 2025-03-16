@@ -1,3 +1,4 @@
+//Order.ts
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 import {
   IsNotEmpty,
@@ -86,7 +87,7 @@ export class Order {
   items: OrderItem[] = [];
 
   // Добавляем общую стоимость заказа
-  /*   @IsNumber({ allowNaN: false, allowInfinity: false })
+  /* @IsNumber({ allowNaN: false, allowInfinity: false })
   @Column({ type: "numeric", precision: 10, scale: 2, default: 0.0 })
   totalCost: number = 0.0; */
 }
