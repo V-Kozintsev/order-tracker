@@ -16,7 +16,7 @@ const initDB = async () => {
 
     const tempDataSource = new DataSource(tempDataSourceOptions);
 
-    // Подключаемся к базе 43
+    // Подключаем
     await tempDataSource.initialize();
 
     // Проверяем, существует ли база данных
