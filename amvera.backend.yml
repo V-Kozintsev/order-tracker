@@ -1,0 +1,9 @@
+meta:
+  environment: docker
+  toolchain: docker
+build:
+  dockerfile: Dockerfile.backend
+  skip: false
+run:
+  persistenceMount: /data
+  containerPort: "3001"
