@@ -2,10 +2,14 @@ FROM node:20
 
 WORKDIR /app
 
-# Копируем ТОЛЬКО package.json сначала для кэширования
+# Копируем ТОЛЬКО package.json и package-lock.json для кэширования
 COPY package.json package-lock.json ./
 
+# Устанавливаем специфические пакеты ДО общего npm install
+RUN npm install -g npm@11.2.0
+# Устанавливаем основные зависимости
 RUN npm install
+RUN npm audit fix
 
 # Копируем остальные файлы
 COPY . .
