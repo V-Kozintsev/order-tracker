@@ -12,7 +12,7 @@ export class AdminService {
     private dataSource: DataSource,
     adminRepository: AdminRepository
   ) {
-    //  Удаляем private из конструктора
+    //  Удаляем private из коа
     this.adminRepository = adminRepository;
   }
 
