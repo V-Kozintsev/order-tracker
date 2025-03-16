@@ -1,9 +1,14 @@
 meta:
   environment: docker
-  toolchain: docker
+  toolchain:
+    name: docker
 build:
   dockerfile: Dockerfile.backend
   skip: false
 run:
+  image: null
+  command: null
+  args: null
   persistenceMount: /data
   containerPort: "3001"
+  servicePort: "80"
