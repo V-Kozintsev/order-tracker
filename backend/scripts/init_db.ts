@@ -11,12 +11,12 @@ const initDB = async () => {
       port: Number(process.env.DB_PORT) || 5432,
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: "postgres", // Подключаемся к базе данных postgres для создания новой
+      database: "postgres", 
     };
 
     const tempDataSource = new DataSource(tempDataSourceOptions);
 
-    // Подключаемся к базе данных postgres
+    // Подключаемся к базе 43
     await tempDataSource.initialize();
 
     // Проверяем, существует ли база данных
