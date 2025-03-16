@@ -1,10 +1,8 @@
-version: "3.8"
-
 services:
   backend:
     build:
       context: .
-      target: backend # Указываем, какой этап билда использовать
+      dockerfile: Dockerfile.backend
     ports:
       - "3001:3001"
     env_file:
@@ -12,19 +10,15 @@ services:
     depends_on:
       - db
     restart: always
-    networks:
-      - mynetwork
 
   frontend:
     build:
       context: .
-      target: frontend # Указываем, какой этап билда использовать
+      dockerfile: Dockerfile.frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
-    networks:
-      - mynetwork
 
   db:
     image: postgres:15
@@ -35,14 +29,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432" # УДАЛЕНИЕ этого порта сделает базу данных доступной только внутри сети Docker
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - mynetwork
 
 volumes:
   postgres_data:
-
-networks:
-  mynetwork: # Создаем сеть Docker для взаимодействия между контейнерами

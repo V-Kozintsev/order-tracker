@@ -1,0 +1,17 @@
+
+# Этап 3: Подготовка к запуску фронтенда (frontend)
+FROM node:20 AS frontend
+
+WORKDIR /app/frontend
+
+# Копируем ТОЛЬКО package.json и package-lock.json для кэширования
+COPY package.json package-lock.json ./
+
+# Устанавливаем основные зависимости
+RUN npm install
+
+# Копируем остальные файлы фронтенда
+COPY ./frontend .
+
+EXPOSE 3000
+CMD ["npm", "run", "serve"]
