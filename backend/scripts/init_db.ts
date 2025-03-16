@@ -11,7 +11,7 @@ const initDB = async () => {
       port: Number(process.env.DB_PORT) || 5432,
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: "postgres", 
+      database: "postgres",
     };
 
     const tempDataSource = new DataSource(tempDataSourceOptions);
@@ -27,7 +27,7 @@ const initDB = async () => {
     );
 
     if (dbExists.length === 0) {
-      // Создаем базу данных, если она не существует
+      // Создаем базу данных,
       console.log(
         `Creating database ${process.env.DB_NAME || "order_track"}...`
       );
