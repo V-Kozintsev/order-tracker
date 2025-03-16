@@ -1,4 +1,3 @@
-// seed.ts
 import { DataSource } from "typeorm";
 import { Admin } from "./entities/Admin";
 import * as bcrypt from "bcrypt";
@@ -6,20 +5,22 @@ import * as bcrypt from "bcrypt";
 async function seed(dataSource: DataSource) {
   try {
     const adminRepository = dataSource.getRepository(Admin);
+    const superAdminPassword = process.env.SUPERADMIN_PASSWORD;
 
-    // Проверяем, существует ли уже superadmin
+    if (!superAdminPassword) {
+      throw new Error(
+        "SUPERADMIN_PASSWORD is not set in environment variables!"
+      );
+    }
+
     const existingSuperAdmin = await adminRepository.findOne({
       where: { role: "superadmin" },
     });
 
     if (!existingSuperAdmin) {
-      // Создаем superadmin
-      const hashedPassword = await bcrypt.hash(
-        "4Kd3UAMZhlAKg6I1LniS0Y5zKO7jyeT7",
-        10
-      ); //  Замените "superadminpassword" на более надежный пароль
+      const hashedPassword = await bcrypt.hash(superAdminPassword, 10);
       const superAdmin = new Admin();
-      superAdmin.username = "superadmin"; //  Замените "superadmin" на желаемое имя пользователя
+      superAdmin.username = "superadmin";
       superAdmin.password = hashedPassword;
       superAdmin.role = "superadmin";
 
@@ -30,6 +31,7 @@ async function seed(dataSource: DataSource) {
     }
   } catch (error) {
     console.error("Error seeding database:", error);
+    process.exit(1); // Завершаем процесс с ошибкой
   }
 }
 
