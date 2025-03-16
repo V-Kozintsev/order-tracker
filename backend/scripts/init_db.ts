@@ -5,7 +5,6 @@ import seed from "../seed";
 
 const initDB = async () => {
   try {
-    // Создаем временное подключение к базе данных postgres для создания новой базы данных
     const tempDataSourceOptions: DataSourceOptions = {
       type: "postgres",
       host: process.env.DB_HOST,
