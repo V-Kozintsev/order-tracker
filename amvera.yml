@@ -1,15 +1,28 @@
-version: null
-meta:
-  environment: docker
-  toolchain:
-    name: docker
-    version: latest
-build:
-  dockerfile: docker-compose.yml
-  skip: false
-run:
-  image: null
-  command: null
-  args: null
-  persistenceMount: /data
-  containerPort: 3001
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3001"
+    restart: always
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
